@@ -14,7 +14,27 @@
             "Marketing",
             "Finance",
             "Administration"
-        ]
+        ];
+
+        $scope.shouldShowFullName = function () {
+            return true;
+        };
+
+        $scope.programmingLanguages = [
+            "C",
+            "C++",
+            "C#",
+            "JavaScript",
+            "Java",
+            "Pascal",
+            "Perl",
+            "PHP"
+        ];
+
+        $scope.hoveringOver = function (value) {
+            $scope.overStar = value;
+            $scope.percent = 100 * (value / 10);
+        };
 
         $scope.submitForm = function () {
             if ($scope.editableEmployee.id == 0) {
@@ -29,11 +49,11 @@
             //$window.history.back();
 
             $modalInstance.close();
-        }
+        };
 
         $scope.cancelForm = function () {
             //window.history.back();
 
             $modalInstance.dismiss();
-        }
+        };
     });

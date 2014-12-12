@@ -1,4 +1,4 @@
-﻿<form class="form-horizontal" role="form">
+﻿<form class="form-horizontal" name="employeeForm" novalidate role="form">
     <div class="modal-header">
         <h1>Create New Employee</h1>
     </div>
@@ -6,13 +6,35 @@
     <div class="modal-body">
         <fieldset>
             <legend>Basic Information</legend>
-            <div class="form-group">
+            <!--<div class="form-group" show-errors">
                 <label for="fullName" class="col-sm-3 control-label">Name</label>
                 <div class="col-sm-9">
                     <input type="text" id="fullName" name="fullName" class="form-control"
-                           ng-model="editableEmployee.fullName" />
+                           ng-model="editableEmployee.fullName" ng-required="true" />
+                    <span class="help-block" hide>Full Name is required</span>
                 </div>
+            </div>-->
 
+            <div class="form-group" show-errors>
+                <label for="fullName" class="col-sm-3 control-label">Name</label>
+                <div class="col-sm-9">
+                    <input type="text" id="fullName" name="fullName" class="form-control"
+                           ng-model="editableEmployee.fullName" ng-required="true"
+                           ng-pattern="/^A/" />
+                    <span class="help-block"
+                          ng-if="employeeForm.fullName.$error.required">Full Name is required</span>
+                    <span class="help-block"
+                          ng-if="employeeForm.fullName.$error.pattern">Full Name must start with A</span>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error' : employeeForm.email.$invalid && employeeForm.email.$touched}">
+                <label for="email" class="col-sm-3 control-label">Email</label>
+                <div class="col-sm-9">
+                    <input type="email" id="email" name="email" class="form-control"
+                           ng-model="editableEmployee.email" ng-required="true" />
+                    <span class="help-block" ng-show="employeeForm.email.$invalid && employeeForm.email.$touched">A valid email is required</span>
+                </div>
             </div>
 
             <div class="form-group">
@@ -31,8 +53,81 @@
                             ng-options="dept for dept in departments"></select>
                 </div>
             </div>
-            <br />
+
+           <div class="form-group">
+                <label for="dateHired" class="col-sm-3 control-label">Date Hired/label> 
+                <div class="col-sm-9">
+                    <datepicker name="dateHired" ng-model="editableEmployee.dateHired">
+                    </datepicker>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="breakTime" class="col-sm-3 control-label">Break Time</label>
+                <div class="col-sm-9">
+                    <timepicker name="breakTime" ng-model="editableEmployee.breakTime">
+                    </timepicker>
+                </div>
+            </div>
+
+            <!--<div class="form-group">
+                <label for="topProgrammingLanguage" class="col-sm-3 control-label">
+                    Top Programming Language
+                </label>
+                <div class="col-sm-9">
+                    <input type="text" id="topProgrammingLanguage" name="topProgrammingLanguage" 
+                           class="form-control"
+                           ng-model="editableEmployee.topProgrammingLanguage" 
+                           typeahead="language for language in programmingLanguages | filter:$viewValue"/>
+                </div>
+            </div>-->
+
+            <div class="form-group">
+                <label for="interviewRating" class="col-sm-3 control-label">
+                    Interview Rating
+                </label>
+                <div class="rating-control col-sm-4">
+                    <rating id="interviewRating" name="interviewRating"
+                            ng-model="interviewRating"
+                            max="10" on-hover="hoveringOver(value)" on-leave="overStar = null"/>
+
+                </div>
+                <div class="rating-control">
+                    <span class="label"
+                          ng-class="{'label-warning': percent<30, 'label-info': percent>30 && percent<70, 'label-success': percent>=70}"
+                          ng-show="overStar">{{percent}}%</span>
+                </div>
+            </div>
+
+            <div class="col-sm-offset-3 col-sm-9">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="isUnderNonCompete" 
+                               ng-model="editableEmployee.isUnderNonCompete"/>
+                        <span tooltip="Contact legal if you are uncertain"
+                              tooltip-placement="right"
+                              tooltip-trigger="mouseenter">
+                            Is employee under a non-compete contract?
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group" collapse="!editableEmployee.isUnderNonCompete">
+                <label for=" nonCompeteNotes" class="com-sm-3 control-label">
+                    Non-Compete Notes
+                </label>
+                <div class="col-sm-9">
+                    <textarea name="notes" , id="notes" , class="form-control" rows="5" cols="40"
+                              ng-model="editableEmployee.nonCompeteNotes"></textarea>
+                </div>
+
+            </div>
+
+
+
         </fieldset>
+        <br />
 
         <fieldset>
             <legend>Perks</legend>
